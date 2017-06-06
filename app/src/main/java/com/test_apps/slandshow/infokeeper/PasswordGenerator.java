@@ -35,10 +35,15 @@ public class PasswordGenerator extends AppCompatActivity {
 
         passLength = 0;
         chars = new ArrayList<>();
-        btnPassGenerator = (Button) findViewById(R.id.btnGeneratePass);
+        btnPassGenerator = (Button) findViewById(R.id.btnpassg);
         passSeekBar = (SeekBar) findViewById(R.id.seekBarPass);
         password = (EditText) findViewById(R.id.editTextPass);
         txtPassGenerator = (TextView) findViewById(R.id.textViewPasswordGenerator);
+        capital = (CheckBox) findViewById(R.id.checkBox1);
+        cursive = (CheckBox) findViewById(R.id.checkBox2);
+        number = (CheckBox) findViewById(R.id.checkBox3);
+
+        passSeekBar.setProgress(0);
 
         // SeekBar listener
         passSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -61,6 +66,27 @@ public class PasswordGenerator extends AppCompatActivity {
                 txtPassGenerator.setText(seekBar.getProgress() + "");
                 passLength = seekBar.getProgress();
                 init();
+            }
+        });
+
+        capital.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        cursive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        number.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
 
