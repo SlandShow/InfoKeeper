@@ -19,6 +19,7 @@ public class EntryManager extends AppCompatActivity {
     private DataBaseHandler dataBaseHandler;
     private EditText mail, pass, site;
     private UserEntry userEntry;
+    public static boolean flag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,72 @@ public class EntryManager extends AppCompatActivity {
         site = (EditText) findViewById(R.id.userSiteInp);
 
         dataBaseHandler = new DataBaseHandler(this); // Arguments: this, null, null, 1
+
+      /*  final Intent intent = getIntent();
+        String str = intent.getStringExtra(PasswordGenerator.TAG);
+        if (str != null || str != "") {
+            pass.setText(PasswordGenerator.pass);
+            mail.setText("");
+            site.setText("");
+            Toast.makeText(getApplicationContext(), PasswordGenerator.pass, Toast.LENGTH_SHORT).show();
+        }*/
+
+        if (flag) {
+            flag = false;
+            pass.setText(PasswordGenerator.pass);
+            mail.setText("");
+            site.setText("");
+            Toast.makeText(getApplicationContext(), PasswordGenerator.pass, Toast.LENGTH_SHORT).show();
+        }
+
+        // Listeners
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String mail = EntryManager.this.mail.getText().toString();
+                String pass = EntryManager.this.pass.getText().toString();
+                String site = EntryManager.this.site.getText().toString();
+
+                userEntry = new UserEntry(mail, pass, site); // This object with entries will be used in Intent extra data method
+                userEntry.setDataBaseHandler(dataBaseHandler);
+                // Clear input fields
+                EntryManager.this.mail.setText("");
+                EntryManager.this.pass.setText("");
+                EntryManager.this.site.setText("");
+
+                // Add data in SQLite
+                try {
+                    dataBaseHandler.addData(mail, pass, site);
+                    Toast.makeText(getApplicationContext(), "All data successful added " + ("\ud83d\ude01"), Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), "Problem with adding data in database!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        btnView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // If we load EntryViewActivity by this button
+                // We must use Serializable object before sending to another activity!
+                // Создаём экземпляр класса Intent, который в Android реализует переход от одной
+                // Активности к другой. Так же передаём ей данные (строки) через `putExtra`
+                Intent intent = new Intent(getApplicationContext(), EntryViewActivity.class);
+                intent.putExtra("TAG", "Test String");
+                // Переходим из текущей активности в активность `EntryViewActivity`
+                startActivity(intent);
+            }
+        });
+
+        btnClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Clear input fields
+                EntryManager.this.mail.setText("");
+                EntryManager.this.pass.setText("");
+                EntryManager.this.site.setText("");
+            }
+        });
 
     }
 
@@ -61,7 +128,6 @@ public class EntryManager extends AppCompatActivity {
     protected void onViewEntry(View view) {
         // If we load EntryViewActivity by this button
         // We must use Serializable object before sending to another activity!
-
         // Создаём экземпляр класса Intent, который в Android реализует переход от одной
         // Активности к другой. Так же передаём ей данные (строки) через `putExtra`
         Intent intent = new Intent(getApplicationContext(), EntryViewActivity.class);
@@ -72,9 +138,6 @@ public class EntryManager extends AppCompatActivity {
 
 
     protected void onClearEntry(View view) {
-        // Clear input fields
-        this.mail.setText("");
-        this.pass.setText("");
-        this.site.setText("");
+
     }
 }

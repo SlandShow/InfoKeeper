@@ -11,25 +11,23 @@
     tools:context="com.test_apps.slandshow.infokeeper.MainActivity">
 
     <Button
-        android:text="Add Entry"
+        android:id="@+id/btnAddEntry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="93dp"
-        android:id="@+id/btnAddEntry"
         android:layout_alignEnd="@+id/btnViewEntries"
+        android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/btnViewEntries"
-        android:onClick="onAdd" />
+        android:layout_marginTop="93dp"
+        android:text="Add Entry" />
 
     <Button
-        android:text="View All Entries"
+        android:id="@+id/btnViewEntries"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:id="@+id/btnViewEntries"
         android:layout_below="@+id/btnAddEntry"
         android:layout_centerHorizontal="true"
-        android:onClick="onView" />
+        android:layout_marginTop="36dp"
+        android:text="View All Entries" />
 
     <Button
         android:text="Generate Password"
@@ -42,21 +40,19 @@
         android:layout_alignEnd="@+id/btnViewEntries" />
 
     <Button
-        android:text="Change Password"
+        android:id="@+id/btn_change_pass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:id="@+id/btn_change_pass"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="32dp"
         android:layout_toStartOf="@+id/btnGeneratePass"
-        android:onClick="onChangePass" />
+        android:text="Change Password" />
 
     <Button
-        android:text="Disable Password"
+        android:id="@+id/btn_off_pass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/btn_change_pass"
         android:layout_toEndOf="@+id/btnGeneratePass"
-        android:id="@+id/btn_off_pass"
-        android:onClick="onDisablePass" />
+        android:text="Disable Password" />
 </RelativeLayout>

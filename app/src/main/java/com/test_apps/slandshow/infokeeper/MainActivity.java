@@ -20,7 +20,7 @@ public class MainActivity extends LockActivity {
     private Button btnViewEntries;
     private Button btnGeneratePass;
     private Button btnChangePass, btnDisablePass;
-    
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +33,62 @@ public class MainActivity extends LockActivity {
         btnChangePass = (Button) findViewById(R.id.btn_change_pass);
         btnDisablePass = (Button) findViewById(R.id.btn_off_pass);
 
+        // Init all listeners on buttons here!
+        btnAddEntry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Intent intent = new Intent(getApplicationContext(), EntryManager.class);
+                    startActivity(intent);
+                } catch (Exception exe) {
+                    Toast.makeText(getApplicationContext(), exe.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        btnViewEntries.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), EntryViewActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnGeneratePass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, PasswordGenerator.class);
+                startActivity(intent);
+            }
+        });
+
+        btnChangePass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LockActivity.class);
+                intent.putExtra(Locker.TYPE, Locker.CHANGE_PASSWORD);
+                intent.putExtra(Locker.MESSAGE, getString(R.string.enter_old_passcode));
+                startActivityForResult(intent, Locker.CHANGE_PASSWORD);
+            }
+        });
+
+        btnDisablePass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int type = AppLocker.getInstance().getAppLock().isPasscodeSet() ? Locker.DISABLE_PASSLOCK : Locker.ENABLE_PASSLOCK;
+                Intent intent = new Intent(MainActivity.this, LockActivity.class);
+                intent.putExtra(Locker.TYPE, type);
+                startActivityForResult(intent, type);
+            }
+        });
+
         updateUI();
     }
 
     // Adding user entries
     protected void onAdd(View view) {
-            Intent intent = new Intent(getApplicationContext(), EntryManager.class);
-            startActivity(intent);
+        Intent intent = new Intent(getApplicationContext(), EntryManager.class);
+        startActivity(intent);
     }
 
     protected void onView(View view) {
@@ -92,5 +141,4 @@ public class MainActivity extends LockActivity {
             btnChangePass.setEnabled(false);
         }
     }
-
 }

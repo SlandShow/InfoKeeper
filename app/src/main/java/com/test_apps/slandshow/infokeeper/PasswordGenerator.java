@@ -31,7 +31,7 @@ public class PasswordGenerator extends AppCompatActivity {
     private boolean b1, b2, b3, generate = true;
     public static final String TAG = "PASS_GENERATED";
     public static String pass;
-
+    public static boolean IS_LOADED = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,6 +122,28 @@ public class PasswordGenerator extends AppCompatActivity {
                 Intent intent = new Intent(PasswordGenerator.this, EntryManager.class);
                 intent.putExtra(TAG, password.getText());
                 startActivity(intent);
+            }
+        });
+
+        btnPassGenerator.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    if (passLength == 0) {
+                        passLength = passSeekBar.getProgress();
+                        if (passLength == 0) {
+                            Toast.makeText(getApplicationContext(), "Please, set password length", Toast.LENGTH_SHORT).show();
+                        }
+                    } else if (passLength == 1) {
+                        Toast.makeText(getApplicationContext(), "Re-set password length", Toast.LENGTH_SHORT).show();
+                        return;
+                    } else if (generate)
+                        password.setText(choseRandom(passLength, 0, chars.size()));
+                    else if (!generate)
+                        Toast.makeText(getApplicationContext(), "Change check box values!", Toast.LENGTH_SHORT).show();
+                } catch (Exception exe) {
+                    Toast.makeText(getApplicationContext(), "Trying to calculate...", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

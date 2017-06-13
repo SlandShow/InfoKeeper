@@ -19,7 +19,7 @@ public class EntryViewActivity extends AppCompatActivity implements View.OnClick
     private ListView listView;
     private SimpleCursorAdapter adapter;
     private DataBaseHandler dataBaseHandler;
-    private Button btnDeletaAllEntries;
+    private Button btnDeletaAllEntries, btnAdd;
     private ArrayList<UserEntry> arrayList;
     public static final String TAG = "ID_TAG";
 
@@ -31,7 +31,9 @@ public class EntryViewActivity extends AppCompatActivity implements View.OnClick
         listView = (ListView) findViewById(R.id.entryListView);
         dataBaseHandler = new DataBaseHandler(this);
         btnDeletaAllEntries = (Button) findViewById(R.id.btnDeleteAllEntry);
+        btnAdd = (Button) findViewById(R.id.btnAddNewEntrInDB);
         btnDeletaAllEntries.setOnClickListener(this);
+        btnAdd.setOnClickListener(this);
         init();
 
         // Update onClick
@@ -48,6 +50,15 @@ public class EntryViewActivity extends AppCompatActivity implements View.OnClick
                 intent.putExtra(TAG + "ID", position + ""); // Put id
                 arrayList.get(position).setId(position); // Костыль, да
 
+                startActivity(intent);
+            }
+        });
+
+        // Add another entry in DB
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), EntryManager.class);
                 startActivity(intent);
             }
         });
@@ -114,6 +125,7 @@ public class EntryViewActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
+        // Delete all entries
         Cursor cursor = dataBaseHandler.getReadableDatabase().query(
                 DataBaseHandler.TABLE_NAME, new String[]{DataBaseHandler.KEY_ID,
                         DataBaseHandler.TABLE_MAIL,
@@ -138,12 +150,6 @@ public class EntryViewActivity extends AppCompatActivity implements View.OnClick
         } catch (Exception ex) {
             Toast.makeText(getApplicationContext(), "Something gone wrong...", Toast.LENGTH_SHORT).show();
         }
-
-    }
-
-    // Update ListView
-    public static void updateListView() {
-
     }
 
     private void setHandler(ListView listView) {
@@ -155,5 +161,4 @@ public class EntryViewActivity extends AppCompatActivity implements View.OnClick
             }
         });
     }
-
 }
