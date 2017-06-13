@@ -52,7 +52,7 @@ public class EntryDestroyer extends AppCompatActivity {
                             + " AND " + DataBaseHandler.TABLE_MAIL + " = " + "'" + mail + "'");
 
                     Toast.makeText(getApplicationContext(), "Current entry deleted from database!", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(EntryDestroyer.this, MainActivity.class);
+                    Intent i = new Intent(EntryDestroyer.this, EntryViewActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(i);
                 } catch (Exception exc) {
