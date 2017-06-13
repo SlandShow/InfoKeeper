@@ -27,7 +27,7 @@
         android:layout_below="@+id/btnAddEntry"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="36dp"
-        android:text="View All Entries" />
+        android:text="View all Entries" />
 
     <Button
         android:text="Generate Password"
