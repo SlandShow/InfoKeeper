@@ -5,7 +5,7 @@
     <application
         android:name=".App"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_infokeeper"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -19,8 +19,6 @@
         <activity android:name=".EntryManager" />
         <activity android:name=".EntryViewActivity" />
         <activity android:name=".EntryDestroyer" />
-        <activity android:name=".App" />
-        <activity android:name=".PassSettingsActivity" />
         <activity android:name=".PasswordGenerator"></activity>
     </application>
 
