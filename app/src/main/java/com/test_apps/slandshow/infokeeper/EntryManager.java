@@ -1,6 +1,7 @@
 package com.test_apps.slandshow.infokeeper;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +26,9 @@ public class EntryManager extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry_manager);
+
+        // Change app orientation
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         btnAdd = (Button) findViewById(R.id.btnAddEntr);
         btnView = (Button) findViewById(R.id.btnViewDB);
