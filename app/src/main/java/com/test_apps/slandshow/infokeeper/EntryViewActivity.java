@@ -203,7 +203,6 @@ public class EntryViewActivity extends AppCompatActivity implements View.OnClick
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         int id = menuItem.getItemId();
-
         // Add new Entry in DB
         if (id == R.id.id_profile_add) {
             Intent intent = new Intent(getApplicationContext(), EntryManager.class);
