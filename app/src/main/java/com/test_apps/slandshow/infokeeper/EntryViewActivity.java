@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -30,10 +32,10 @@ public class EntryViewActivity extends AppCompatActivity implements View.OnClick
 
         listView = (ListView) findViewById(R.id.entryListView);
         dataBaseHandler = new DataBaseHandler(this);
-        btnDeletaAllEntries = (Button) findViewById(R.id.btnDeleteAllEntry);
-        btnAdd = (Button) findViewById(R.id.btnAddNewEntrInDB);
-        btnDeletaAllEntries.setOnClickListener(this);
-        btnAdd.setOnClickListener(this);
+      //  btnDeletaAllEntries = (Button) findViewById(R.id.btnDeleteAllEntry);
+       // btnAdd = (Button) findViewById(R.id.btnAddNewEntrInDB);
+        //btnDeletaAllEntries.setOnClickListener(this);
+       // btnAdd.setOnClickListener(this);
         init();
 
         // Update onClick
@@ -55,13 +57,13 @@ public class EntryViewActivity extends AppCompatActivity implements View.OnClick
         });
 
         // Add another entry in DB
-        btnAdd.setOnClickListener(new View.OnClickListener() {
+      /*  btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), EntryManager.class);
                 startActivity(intent);
             }
-        });
+        });*/
     }
 
     private void updateEntryArray() {
@@ -152,6 +154,34 @@ public class EntryViewActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    private void clearDatabase() {
+        // Delete all entries
+        Cursor cursor = dataBaseHandler.getReadableDatabase().query(
+                DataBaseHandler.TABLE_NAME, new String[]{DataBaseHandler.KEY_ID,
+                        DataBaseHandler.TABLE_MAIL,
+                        DataBaseHandler.TABLE_PASS,
+                        DataBaseHandler.TABLE_SITE_NAME},
+                null, null, null, null, null
+        );
+        // Если фальшифка езжи
+        if (cursor.getCount() == 0) {
+            Toast.makeText(getApplicationContext(), "There are already no entries in data base", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        try {
+            dataBaseHandler.deleteAllEntries();
+            adapter.notifyDataSetChanged();
+
+            Toast.makeText(getApplicationContext(), "All data successful deleted", Toast.LENGTH_SHORT).show();
+            // Go to main activity
+            Intent i = new Intent(EntryViewActivity.this, MainActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
+        } catch (Exception ex) {
+            Toast.makeText(getApplicationContext(), "Something gone wrong...", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void setHandler(ListView listView) {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -160,5 +190,31 @@ public class EntryViewActivity extends AppCompatActivity implements View.OnClick
 
             }
         });
+    }
+
+    // View ActionBar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.viewer, menu);
+        return true;
+    }
+
+    // Add ActionBar Handler
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        int id = menuItem.getItemId();
+
+        // Add new Entry in DB
+        if (id == R.id.id_profile_add) {
+            Intent intent = new Intent(getApplicationContext(), EntryManager.class);
+            startActivity(intent);
+            return true;
+        }
+        // Clear DB
+        if (id == R.id.id_delete_all) {
+            clearDatabase();
+            return true;
+        }
+        return true;
     }
 }
