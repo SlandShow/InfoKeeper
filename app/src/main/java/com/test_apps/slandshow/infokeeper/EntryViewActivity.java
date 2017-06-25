@@ -224,7 +224,6 @@ public class EntryViewActivity extends AppCompatActivity implements View.OnClick
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
-
         return true;
     }
 }

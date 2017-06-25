@@ -5,6 +5,8 @@ import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -105,6 +107,9 @@ public class EntryManager extends AppCompatActivity {
             }
         });
 
+        // Add back button on ActionBar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 
     protected void onAddEntry(View view) {
@@ -141,7 +146,20 @@ public class EntryManager extends AppCompatActivity {
     }
 
 
-    protected void onClearEntry(View view) {
+    // View ActionBar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.viewer_manager, menu);
+        return true;
+    }
 
+    // Add ActionBar Handler
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        // Back to previous Activity
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        return true;
     }
 }
