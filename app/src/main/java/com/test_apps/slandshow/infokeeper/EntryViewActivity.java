@@ -3,6 +3,7 @@ package com.test_apps.slandshow.infokeeper;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -32,10 +33,10 @@ public class EntryViewActivity extends AppCompatActivity implements View.OnClick
 
         listView = (ListView) findViewById(R.id.entryListView);
         dataBaseHandler = new DataBaseHandler(this);
-      //  btnDeletaAllEntries = (Button) findViewById(R.id.btnDeleteAllEntry);
-       // btnAdd = (Button) findViewById(R.id.btnAddNewEntrInDB);
+        //  btnDeletaAllEntries = (Button) findViewById(R.id.btnDeleteAllEntry);
+        // btnAdd = (Button) findViewById(R.id.btnAddNewEntrInDB);
         //btnDeletaAllEntries.setOnClickListener(this);
-       // btnAdd.setOnClickListener(this);
+        // btnAdd.setOnClickListener(this);
         init();
 
         // Update onClick
@@ -64,6 +65,9 @@ public class EntryViewActivity extends AppCompatActivity implements View.OnClick
                 startActivity(intent);
             }
         });*/
+
+        // Add back button on ActionBar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void updateEntryArray() {
@@ -210,10 +214,17 @@ public class EntryViewActivity extends AppCompatActivity implements View.OnClick
             return true;
         }
         // Clear DB
-        if (id == R.id.id_delete_all) {
+        else if (id == R.id.id_delete_all) {
             clearDatabase();
             return true;
         }
+        // Back to previous Activity
+        else {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+
         return true;
     }
 }
