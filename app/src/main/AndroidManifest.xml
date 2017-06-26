@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".EntryManager" />
-        <activity android:name=".EntryViewActivity" />
+        <activity android:name=".EntryViewActivity"/>
         <activity android:name=".EntryDestroyer" />
         <activity android:name=".PasswordGenerator"></activity>
     </application>

@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -28,11 +30,11 @@ public class PasswordGenerator extends AppCompatActivity {
     private int capitalLetterLvlStart, capitalLetterLvlEnd;
     private int cursiveLetterLvlStart, cursiveLetterLvlEnd;
     private int numbersLvlStart, numbersLvlEnd;
-    private CheckBox capital, cursive, number;
     private boolean b1, b2, b3, generate = true;
     public static final String TAG = "PASS_GENERATED";
     public static String pass;
     public static boolean IS_LOADED = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,10 +49,7 @@ public class PasswordGenerator extends AppCompatActivity {
         passSeekBar = (SeekBar) findViewById(R.id.seekBarPass);
         password = (EditText) findViewById(R.id.editTextPass);
         txtPassGenerator = (TextView) findViewById(R.id.textViewPasswordGenerator);
-        capital = (CheckBox) findViewById(R.id.checkBox1);
-        cursive = (CheckBox) findViewById(R.id.checkBox2);
-        number = (CheckBox) findViewById(R.id.checkBox3);
-        btnAddPass = (Button) findViewById(R.id.buttonAddp);
+
 
         passSeekBar.setProgress(0);
 
@@ -78,57 +77,6 @@ public class PasswordGenerator extends AppCompatActivity {
             }
         });
 
-        capital.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                b1 = true;
-                if (b1 && b2 && b3) {
-                    Toast.makeText(getApplicationContext(), "You can't generate password!", Toast.LENGTH_SHORT).show();
-                    generate = false;
-                    b2 = false;
-                    b3 = false;
-                }
-            }
-        });
-
-        cursive.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                b2 = true;
-                if (b1 && b2 && b3) {
-                    Toast.makeText(getApplicationContext(), "You can't generate password!", Toast.LENGTH_SHORT).show();
-                    generate = false;
-                    b1 = false;
-                    b3 = false;
-                }
-            }
-        });
-
-        number.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                b3 = true;
-                if (b1 && b2 && b3) {
-                    Toast.makeText(getApplicationContext(), "You can't generate password!", Toast.LENGTH_SHORT).show();
-                    generate = false;
-                    b1 = false;
-                    b2 = false;
-                }
-
-            }
-        });
-
-        btnAddPass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EntryManager.flag = true;
-                pass = String.valueOf(password.getText());
-                Intent intent = new Intent(PasswordGenerator.this, EntryManager.class);
-                intent.putExtra(TAG, password.getText());
-                startActivity(intent);
-            }
-        });
-
         btnPassGenerator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,26 +98,11 @@ public class PasswordGenerator extends AppCompatActivity {
                 }
             }
         });
+
+        // Add back button on ActionBar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    protected void onGeneratePass(View view) {
-        try {
-            if (passLength == 0) {
-                passLength = passSeekBar.getProgress();
-                if (passLength == 0) {
-                    Toast.makeText(getApplicationContext(), "Please, set password length", Toast.LENGTH_SHORT).show();
-                }
-            } else if (passLength == 1) {
-                Toast.makeText(getApplicationContext(), "Re-set password length", Toast.LENGTH_SHORT).show();
-                return;
-            } else if (generate)
-                password.setText(choseRandom(passLength, 0, chars.size()));
-            else if (!generate)
-                Toast.makeText(getApplicationContext(), "Change check box values!", Toast.LENGTH_SHORT).show();
-        } catch (Exception exe) {
-            Toast.makeText(getApplicationContext(), "Trying to calculate...", Toast.LENGTH_SHORT).show();
-        }
-    }
 
     private void init() {
         if (chars.size() == 0) {
@@ -197,5 +130,39 @@ public class PasswordGenerator extends AppCompatActivity {
         for (int i = 0; i < size; i++)
             result += String.valueOf(chars.get(random.nextInt(end - start))); // Generate random number from 'start' to 'end'
         return result;
+    }
+
+    // View ActionBar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.viewer_generator, menu);
+        return true;
+    }
+
+    // Add ActionBar Handler
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        int id = menuItem.getItemId();
+        // Add new Entry in DB
+        if (id == R.id.id_profile_add_from_generator) {
+            if (password.getText().equals("") || password == null) {
+                Toast.makeText(getApplicationContext(), "Set up password!", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+
+            EntryManager.flag = true;
+            pass = String.valueOf(password.getText());
+            Intent intent = new Intent(PasswordGenerator.this, EntryManager.class);
+            intent.putExtra(TAG, password.getText());
+            startActivity(intent);
+            return true;
+        }
+        // Back to previous Activity
+        else {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+        return true;
     }
 }

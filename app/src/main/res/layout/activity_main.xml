@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -18,7 +19,9 @@
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/btnViewEntries"
         android:layout_marginTop="93dp"
-        android:text="Add Entry" />
+        android:text="Add Entry"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/btnViewEntries"
@@ -27,17 +30,21 @@
         android:layout_below="@+id/btnAddEntry"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="36dp"
-        android:text="View all Entries" />
+        android:text="View all Entries"
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp" />
 
     <Button
-        android:text="Generate Password"
+        android:id="@+id/btnGeneratePass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="39dp"
-        android:id="@+id/btnGeneratePass"
-        android:layout_below="@+id/btnViewEntries"
+        android:layout_alignEnd="@+id/btnViewEntries"
         android:layout_alignStart="@+id/btnViewEntries"
-        android:layout_alignEnd="@+id/btnViewEntries" />
+        android:layout_below="@+id/btnViewEntries"
+        android:layout_marginTop="39dp"
+        android:text="Generate Password"
+        android:textColor="@color/colorPrimaryHalf"
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/btn_change_pass"
@@ -46,13 +53,18 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="32dp"
         android:layout_toStartOf="@+id/btnGeneratePass"
-        android:text="Change pin" />
+        android:background="@color/button_green"
+        android:text="Change pin"
+        android:textColor="@color/bg_color" />
 
     <Button
         android:id="@+id/btn_off_pass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/btn_change_pass"
-        android:layout_toEndOf="@+id/btnGeneratePass"
-        android:text="Disable pin" />
+        android:background="@color/material_green_500"
+        android:text="Disable pin"
+        android:textColor="@color/bg_color" />
+
 </RelativeLayout>

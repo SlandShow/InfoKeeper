@@ -11,27 +11,29 @@
     tools:context="com.test_apps.slandshow.infokeeper.EntryManager">
 
     <TextView
-        android:text="Enter mail:"
+        android:id="@+id/textViewLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_marginStart="10dp"
         android:layout_marginTop="24dp"
-        android:id="@+id/textViewLogo"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:text="Enter mail:"
+        android:textSize="18sp" />
 
     <EditText
+        android:id="@+id/userMailInp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="infokeeper@gmail.com"
-        android:ems="10"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/textViewLogo"
         android:layout_marginStart="13dp"
         android:layout_marginTop="13dp"
-        android:id="@+id/userMailInp"
-        android:textColor="?attr/actionModeSplitBackground" />
+        android:layout_toEndOf="@+id/textViewLogo"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="infokeeper@gmail.com"
+        android:textColor="?attr/actionModeSplitBackground"
+        android:textSize="18sp" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -47,13 +49,14 @@
         android:textColor="?attr/colorAccent" />
 
     <TextView
-        android:text="Enter site name:"
+        android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView10"
         android:layout_alignBaseline="@+id/userSiteInp"
         android:layout_alignBottom="@+id/userSiteInp"
-        android:layout_alignStart="@+id/textView9" />
+        android:layout_alignStart="@+id/textView9"
+        android:text="Enter site name:"
+        android:textSize="18sp" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -67,42 +70,27 @@
         android:layout_alignStart="@+id/userMailInp" />
 
     <TextView
-        android:text="Enter pass:"
+        android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView9"
         android:layout_alignBaseline="@+id/userPassInp"
         android:layout_alignBottom="@+id/userPassInp"
-        android:layout_toStartOf="@+id/userMailInp" />
-
-    <Button
-        android:id="@+id/btnClear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:text="clear" />
+        android:layout_toStartOf="@+id/userMailInp"
+        android:text="Enter pass:"
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/btnAddEntr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btnClear"
-        android:layout_marginBottom="40dp"
-        android:layout_toStartOf="@+id/btnClear"
         android:background="@color/colorAccent"
         android:fontFamily="sans-serif-medium"
         android:text="ADD"
         android:textAllCaps="false"
         android:textColor="@android:color/background_light"
-        android:textSize="15sp" />
+        android:textSize="18sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
 
-    <Button
-        android:id="@+id/btnViewDB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/btnAddEntr"
-        android:layout_toEndOf="@+id/btnClear"
-        android:text="view entries" />
 </RelativeLayout>

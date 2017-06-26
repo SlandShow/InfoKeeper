@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item
+        android:id="@+id/id_delete_current_entry"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="Delete Entry" />
+
+    <item
+        android:id="@+id/id_change_entry"
+        android:orderInCategory="101"
+        android:showAsAction="never"
+        android:title="Change Entry" />
+
 </menu>

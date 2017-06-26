@@ -16,7 +16,6 @@ public class EntryDestroyer extends AppCompatActivity {
     private String mail, pass, site;
     private TextView mailTxt, passTxt, siteTxt;
     private long id;
-    private Button btnDeleteEntry;
     private DataBaseHandler dataBaseHandler;
 
     @Override
@@ -38,30 +37,9 @@ public class EntryDestroyer extends AppCompatActivity {
         passTxt.setText(pass);
         siteTxt.setText(site);
 
-        btnDeleteEntry = (Button) findViewById(R.id.btnDeleteCurrentEntry);
         dataBaseHandler = new DataBaseHandler(this);
 
         Toast.makeText(this, "You can delete this entry (ID: " + id + ")", Toast.LENGTH_SHORT).show();
-
-        btnDeleteEntry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    // Clear entry from database
-                    SQLiteDatabase db = dataBaseHandler.getWritableDatabase();
-                    db.execSQL("DELETE FROM " + DataBaseHandler.TABLE_NAME + " WHERE " + DataBaseHandler.TABLE_PASS + " = " + "'" + pass + "'" + " AND "
-                            + DataBaseHandler.TABLE_SITE_NAME + " = " + "'" + site + "'"
-                            + " AND " + DataBaseHandler.TABLE_MAIL + " = " + "'" + mail + "'");
-
-                    Toast.makeText(getApplicationContext(), "Current entry deleted from database!", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(EntryDestroyer.this, EntryViewActivity.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(i);
-                } catch (Exception exc) {
-                    Toast.makeText(getApplicationContext(), "Something gone wrong...", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
         // Add back button on ActionBar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -78,8 +56,39 @@ public class EntryDestroyer extends AppCompatActivity {
     // Add ActionBar Handler
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
-        Intent intent = new Intent(EntryDestroyer.this, EntryViewActivity.class);
-        startActivity(intent);
+        int id = menuItem.getItemId();
+
+        if (id == R.id.id_delete_current_entry) {
+            try {
+                // Clear entry from database
+                SQLiteDatabase db = dataBaseHandler.getWritableDatabase();
+                db.execSQL("DELETE FROM " + DataBaseHandler.TABLE_NAME + " WHERE " + DataBaseHandler.TABLE_PASS + " = " + "'" + pass + "'" + " AND "
+                        + DataBaseHandler.TABLE_SITE_NAME + " = " + "'" + site + "'"
+                        + " AND " + DataBaseHandler.TABLE_MAIL + " = " + "'" + mail + "'");
+
+                Toast.makeText(getApplicationContext(), "Current entry deleted from database!", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(EntryDestroyer.this, EntryViewActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+            } catch (Exception exc) {
+                Toast.makeText(getApplicationContext(), "Something gone wrong...", Toast.LENGTH_SHORT).show();
+            }
+        } else if (id == R.id.id_change_entry) {
+            // Clear entry from database
+            SQLiteDatabase db = dataBaseHandler.getWritableDatabase();
+            db.execSQL("DELETE FROM " + DataBaseHandler.TABLE_NAME + " WHERE " + DataBaseHandler.TABLE_PASS + " = " + "'" + pass + "'" + " AND "
+                    + DataBaseHandler.TABLE_SITE_NAME + " = " + "'" + site + "'"
+                    + " AND " + DataBaseHandler.TABLE_MAIL + " = " + "'" + mail + "'");
+            Intent i = new Intent(EntryDestroyer.this, EntryManager.class);
+            EntryManager.m = mail;
+            EntryManager.p = pass;
+            EntryManager.s = site;
+            EntryManager.LOAD = true;
+            startActivity(i);
+        } else {
+            Intent intent = new Intent(EntryDestroyer.this, EntryViewActivity.class);
+            startActivity(intent);
+        }
         return true;
     }
 }

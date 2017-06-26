@@ -13,16 +13,17 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 public class EntryManager extends AppCompatActivity {
 
     private Button btnAdd;
-    private Button btnView;
-    private Button btnClear;
     private DataBaseHandler dataBaseHandler;
     private EditText mail, pass, site;
+    public static String m, p, s;
     private UserEntry userEntry;
     public static boolean flag = false;
+    public static boolean LOAD = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +34,6 @@ public class EntryManager extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         btnAdd = (Button) findViewById(R.id.btnAddEntr);
-        btnView = (Button) findViewById(R.id.btnViewDB);
-        btnClear = (Button) findViewById(R.id.btnClear);
         mail = (EditText) findViewById(R.id.userMailInp);
         pass = (EditText) findViewById(R.id.userPassInp);
         site = (EditText) findViewById(R.id.userSiteInp);
@@ -58,6 +57,13 @@ public class EntryManager extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), PasswordGenerator.pass, Toast.LENGTH_SHORT).show();
         }
 
+        if (LOAD) {
+            LOAD = false;
+            pass.setText(p);
+            site.setText(s);
+            mail.setText(m);
+        }
+
         // Listeners
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +71,11 @@ public class EntryManager extends AppCompatActivity {
                 String mail = EntryManager.this.mail.getText().toString();
                 String pass = EntryManager.this.pass.getText().toString();
                 String site = EntryManager.this.site.getText().toString();
+
+                if (mail.equals("") || pass.equals("") || site.equals("")) {
+                    Toast.makeText(getApplicationContext(), "Please, add entries", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 userEntry = new UserEntry(mail, pass, site); // This object with entries will be used in Intent extra data method
                 userEntry.setDataBaseHandler(dataBaseHandler);
@@ -83,29 +94,6 @@ public class EntryManager extends AppCompatActivity {
             }
         });
 
-        btnView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // If we load EntryViewActivity by this button
-                // We must use Serializable object before sending to another activity!
-                // Создаём экземпляр класса Intent, который в Android реализует переход от одной
-                // Активности к другой. Так же передаём ей данные (строки) через `putExtra`
-                Intent intent = new Intent(getApplicationContext(), EntryViewActivity.class);
-                intent.putExtra("TAG", "Test String");
-                // Переходим из текущей активности в активность `EntryViewActivity`
-                startActivity(intent);
-            }
-        });
-
-        btnClear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Clear input fields
-                EntryManager.this.mail.setText("");
-                EntryManager.this.pass.setText("");
-                EntryManager.this.site.setText("");
-            }
-        });
 
         // Add back button on ActionBar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -156,10 +144,51 @@ public class EntryManager extends AppCompatActivity {
     // Add ActionBar Handler
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
-        // Back to previous Activity
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
+        int id = menuItem.getItemId();
+        if (id == R.id.id_add_to_db) {
+            String mail = EntryManager.this.mail.getText().toString();
+            String pass = EntryManager.this.pass.getText().toString();
+            String site = EntryManager.this.site.getText().toString();
+
+            if (mail.equals("") || pass.equals("") || site.equals("")) {
+                Toast.makeText(getApplicationContext(), "Please, add entries", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+
+            userEntry = new UserEntry(mail, pass, site); // This object with entries will be used in Intent extra data method
+            userEntry.setDataBaseHandler(dataBaseHandler);
+            // Clear input fields
+            EntryManager.this.mail.setText("");
+            EntryManager.this.pass.setText("");
+            EntryManager.this.site.setText("");
+
+            // Add data in SQLite
+            try {
+                dataBaseHandler.addData(mail, pass, site);
+                Toast.makeText(getApplicationContext(), "All data successful added " + ("\ud83d\ude01"), Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(), "Problem with adding data in database!", Toast.LENGTH_SHORT).show();
+            }
+        } else if (id == R.id.id_clear_all) {
+            // Clear input fields
+            EntryManager.this.mail.setText("");
+            EntryManager.this.pass.setText("");
+            EntryManager.this.site.setText("");
+        } else if (id == R.id.id_view_all) {
+            // If we load EntryViewActivity by this button
+            // We must use Serializable object before sending to another activity!
+            // Создаём экземпляр класса Intent, который в Android реализует переход от одной
+            // Активности к другой. Так же передаём ей данные (строки) через `putExtra`
+            Intent intent = new Intent(getApplicationContext(), EntryViewActivity.class);
+            intent.putExtra("TAG", "Test String");
+            // Переходим из текущей активности в активность `EntryViewActivity`
+            startActivity(intent);
+        } else {
+            // Back to previous Activity
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
         return true;
     }
 }

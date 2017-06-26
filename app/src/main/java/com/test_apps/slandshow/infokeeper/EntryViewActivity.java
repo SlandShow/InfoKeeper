@@ -102,6 +102,7 @@ public class EntryViewActivity extends AppCompatActivity implements View.OnClick
             } else if (cursor.getCount() == 0) {
                 Toast.makeText(getApplicationContext(),
                         "No entries in database", Toast.LENGTH_SHORT).show();
+                this.setContentView(R.layout.activity_entryview_alternative);
                 return;
             }
 
