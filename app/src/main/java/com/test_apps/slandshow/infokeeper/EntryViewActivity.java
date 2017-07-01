@@ -3,6 +3,7 @@ package com.test_apps.slandshow.infokeeper;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ public class EntryViewActivity extends AppCompatActivity implements View.OnClick
     private Button btnDeletaAllEntries, btnAdd;
     private ArrayList<UserEntry> arrayList;
     public static final String TAG = "ID_TAG";
+    private FloatingActionButton fbAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,14 @@ public class EntryViewActivity extends AppCompatActivity implements View.OnClick
                 startActivity(intent);
             }
         });*/
+
+        fbAdd = (FloatingActionButton) findViewById(R.id.floatingActionButton);
+        fbAdd.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), EntryManager.class);
+                startActivity(intent);
+            }
+        });
 
         // Add back button on ActionBar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
